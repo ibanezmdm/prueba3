@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'pages/mySongs'
 
   get 'pages/index'
 
@@ -7,6 +6,10 @@ Rails.application.routes.draw do
     member do
       get 'add'
     end
+  end
+
+  resources :user, only: [:index] do
+    resources :songs, only: [:index]
   end
 
     devise_for :users, controllers: { 
