@@ -1,10 +1,11 @@
 class SongsController < ApplicationController
-  before_action :set_song, only: [:show, :edit, :update, :destroy]
+  before_action :set_song, only: [:show, :edit, :update, :destroy, :add]
 
   # GET /songs
   # GET /songs.json
   def index
     @songs = Song.all
+    @user = current_user
   end
 
   # GET /songs/1
@@ -15,10 +16,12 @@ class SongsController < ApplicationController
   # GET /songs/new
   def new
     @song = Song.new
+    @genres = Genre.all
   end
 
   # GET /songs/1/edit
   def edit
+    @genres = Genre.all
   end
 
   # POST /songs
@@ -61,6 +64,12 @@ class SongsController < ApplicationController
     end
   end
 
+  def add
+    @song.user_songs.build(user: current_user)
+    @song.save
+    redirect_to songs_path
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_song
@@ -69,6 +78,6 @@ class SongsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def song_params
-      params.require(:song).permit(:name, :duration, :genre)
+      params.require(:song).permit(:name, :duration, :genre_id)
     end
 end

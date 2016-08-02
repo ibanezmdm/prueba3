@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
+  get 'pages/mySongs'
+
   get 'pages/index'
 
-  resources :songs
+  resources :songs do
+    member do
+      get 'add'
+    end
+  end
 
     devise_for :users, controllers: { 
     sessions: 'users/sessions',
